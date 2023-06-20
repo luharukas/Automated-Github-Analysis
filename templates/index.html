@@ -17,7 +17,7 @@
     </form>
     <div id="results">
         {% if result %}
-          <p>{{ result }}</p>
+          <p>{{ result|safe  }}</p>
         {% else %}
           <p></p>
         {% endif %}

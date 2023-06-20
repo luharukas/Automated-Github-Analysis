@@ -3,9 +3,8 @@ import time
 import yaml
 import os
 
-with open('src/credentials.yml',"r") as file:
-    tokens=yaml.safe_load(file)
-header={"Authorization":"Bearer"+tokens['GITHUB_TOKEN']}
+
+header={"Authorization":"Bearer"+os.environ.get('GITHUB_TOKEN')}
 
 language_mapper={
      'cpp':'c++',

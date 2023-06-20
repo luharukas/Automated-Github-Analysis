@@ -15,9 +15,7 @@ from langchain.vectorstores import Chroma
 
 
 # Set environment tokens
-with open('src/credentials.yml',"r") as file:
-    tokens=yaml.safe_load(file)
-os.environ['OPENAI_API_KEY']=tokens['OPENAI_API_KEY']
+
 
 
 app = Flask(__name__)
@@ -50,7 +48,9 @@ def start():
                 else:
                     try:
                         document_list=[]
-                        for repo in tqdm(user.repo_name()):
+                        final_repo_list=user.repo_name()[:5] if user.repo_length()>5 else user.repo_name()
+                        print("Analyzing the repositories. We are taking only Analyzing the first 5 repos.")
+                        for repo in tqdm(final_repo_list):
                             try:
                                 repo_content=user.get_repository_content(repo)
                                 # repo_content=reduce_token_size(user.get_repository_content(repo))
@@ -73,10 +73,14 @@ def start():
                         print("Database as retrivver")
                         qa = ConversationalRetrievalChain.from_llm(model, retriever=retriever)
                         print("Conversation retrival chain")
-                        question="Your task is to analyze all the script understand its work and tell me which script is more technically complex and challenging based on parameters like code complexity, usefulness, length, code structure, code quality etc. Return only repo  name as result. t should be in the formatof 'Result:\{repo_name\}\n Description: \{descrition of the project\}'"
+                        question=f"Your task is to analyze all the script understand its work and tell me which script is more technically complex and challenging based on parameters like code complexity, usefulness, length, code structure, code quality etc. Return only repo name from the list of the {final_repo_list} as result . It should be in the format of 'Result:repo_name Description: descrition of the project' "
                         result = qa({"question": question, "chat_history":[]})
+                        try:
+                            result_repo, description = extract_result_and_description(result['answer'])
+                            return render_template('index.html',result=f"<b>Most technical complex repo is:</b>{result_repo} <br><br><b>Description about this repo:</b> {description}")
 
-                        return render_template('index.html',result=f"Response: {result['answer']}")
+                        except:
+                            return render_template('index.html',result=f" Response: {result['answer']}")
                     
                     except Exception as e:
                         return render_template('index.html',result=f"Something is wrong\n {e}")
