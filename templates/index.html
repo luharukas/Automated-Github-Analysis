@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Github Analysis</title>
+</head>
+
+<body>
+    <h1 style="font-family: 'Courier New', Courier, monospace;color: blue;font-size: 50px;text-align: center;">
+        GitHub Repository Analysis</h1>
+    <br>
+    <form method="post" action="/start">
+        <input type='text' name='url' id="github_url" placeholder='Enter GitHub URL' style="width: 60%;height: 25px;border-radius: 5px;margin-left:20% ;"><br><br>
+        <button style="border-radius: 50%;height: 50px;width: 50px;margin-left: 50%; background-color: black;color: white;">Start</button>
+    </form>
+    <div id="results">
+        {% if result %}
+          <p>{{ result }}</p>
+        {% else %}
+          <p></p>
+        {% endif %}
+    </div>
+</body>
+</html>
