@@ -5,10 +5,6 @@ import yaml
 import nbformat
 from nbconvert import PythonExporter
 
-with open('src/credentials.yml',"r") as file:
-    tokens=yaml.safe_load(file)
-openai.api_key=tokens['OPENAI_API_KEY']
-
 def validate_github_url(url):
     pattern = r"https:\/\/www\.github\.com\/[A-Za-z0-9_-]+$"
     match = re.match(pattern, url)
@@ -51,3 +47,11 @@ def reduce_token_size(code):
 
 
 
+def extract_result_and_description(text):
+    result_match = re.search(r"Result:\s*(.*?)\s*Description:", text)
+    description_match = re.search(r"Description:\s*(.*)$", text)
+
+    result = result_match.group(1) if result_match else None
+    description = description_match.group(1) if description_match else None
+
+    return result, description
