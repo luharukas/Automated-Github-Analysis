@@ -2,12 +2,9 @@
 from flask import Flask, render_template,request
 from src.utils import *
 from src.userinfo import userInfo
-import yaml
-import os
 from langchain.docstore.document import Document
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import DeepLake
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationalRetrievalChain
 from tqdm.auto import tqdm
