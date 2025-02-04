@@ -10,7 +10,6 @@ from langchain.chains import ConversationalRetrievalChain
 from tqdm.auto import tqdm
 from langchain.vectorstores import Chroma
 
-
 # Set environment tokens
 
 
